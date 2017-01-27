@@ -1,8 +1,8 @@
 <template>
-    <div :class="[classDiv, etatDiv]" :id="id" v-show="show">
-        <label :class="classLabel" v-show="showLabel">{{labelData}}</label>
-        <div :class="classControl">
-            <input :class="classInput" :value="value" @input="$emit('input', $event.target.value)" :type="type" :placeholder="placeholder" @blur="blur" @focus="focus">
+    <div :class="[style.classDiv, etatDiv]" :id="id" v-show="show">
+        <label :class="style.classLabel" v-show="showLabel">{{labelData}}</label>
+        <div :class="style.classControl">
+            <input :class="style.classInput" :value="value" @input="$emit('input', $event.target.value)" :type="type" :placeholder="placeholder" @blur="blur" @focus="focus">
         </div>
     </div>
 </template>
@@ -30,21 +30,14 @@
                     return defaultId + "-" + countId++;
                 }
             },
-            classDiv: {
-                type: String,
-                default: "form-group row"
-            },
-            classLabel: {
-                type: String,
-                default: "col-form-label"
-            },
-            classControl: {
-                type: String,
-                default: "col-form-label"
-            },
-            classInput: {
-                type: String,
-                default: "form-control"
+            style: {
+                type: Object,
+                default: {
+                    classDiv: 'form-group row',
+                    classLabel: 'col-form-label',
+                    classControl: 'col-form-label',
+                    classInput: 'form-control'
+                }
             },
             required: {
                 type: [Boolean, String],

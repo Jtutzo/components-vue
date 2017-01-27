@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    $ = require('jquery');
+    var $ = require('jquery');
     require('bootstrap');
     
      module.exports = {
