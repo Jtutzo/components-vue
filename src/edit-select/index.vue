@@ -1,8 +1,8 @@
 <template>
-    <div :class="[style.classDiv, etatDiv]" :id="id" v-show="show">
-        <label :class="style.classLabel" v-show="showLabel">{{labelData}}</label>
-        <div :class="style.classControl">
-            <select :class="style.classSelect" :data-placeholder="placeholder" :multiple="multiple">
+    <div :class="[style.div, etatDiv]" :id="id" v-show="show">
+        <label :class="style.label" v-show="showLabel">{{labelData}}</label>
+        <div :class="style.control">
+            <select :class="style.select" :data-placeholder="placeholder" :multiple="multiple">
                 <slot></slot>
             </select>
         </div>
@@ -17,7 +17,7 @@
     
     require('chosen-js');
     
-    var defaultId = "edit-text";
+    var defaultId = "edit-select";
     var countId   = 0;
     
     var hasErrorClass   = "text-danger has-error";
@@ -39,10 +39,10 @@
                 type: Object,
                 default: function() {
                     return {
-                        classDiv: 'form-group row',
-                        classLabel: 'col-form-label',
-                        classControl: 'col-form-label',
-                        classSelect: '' 
+                        div: 'form-group row',
+                        label: 'col-form-label',
+                        control: 'col-form-label',
+                        select: '' 
                     }
                 }
             },
@@ -53,14 +53,14 @@
             maxLength: Number,
             label: String,
             placeholder: String,
-            /**value: {
+            value: {
                 required: true
-            },*/
+            },
             show: {
-                type: Boolean,
+                type: [Boolean, String],
                 default: true
             },
-            enable: Boolean,
+            enable: [Boolean, String],
             etat: {
                 type: String,
                 default: "clean",
@@ -69,12 +69,16 @@
                 }
             },
             multiple: {
-                type: Boolean,
+                type: [Boolean, String],
                 default: false
             },
             options: {
                 type: Array,
                 default: null
+            },
+            reference: {
+                type: String,
+                default: 'label'
             }
         },
         
@@ -85,42 +89,96 @@
             return {
                 showLabel: util.isNotNullOrUndefined(this.label),
                 labelData: (util.isNotNullOrUndefined(this.label) && this.required)?this.label + " *":this.label,
-                etatDiv: (this.etat === 'success'?hasSuccessClass:(this.etat === 'error'?hasErrorClass:''))
+                etatDiv: (this.etat === 'success'?hasSuccessClass:(this.etat === 'error'?hasErrorClass:'')),
+                optionsData: this.options
             }
         },
         
         mounted: function() {
             var vm = this;
-            $(this.$el).find("select").chosen({
+            var select$ = $(this.$el).find("select");
+            
+            select$.chosen({
                 inherit_select_classes: true,
                 width: '100%',
-                allow_single_deselect: true
+                allow_single_deselect: true,
+                max_shown_results: vm.maxLength
             });
+            
+            select$.on("change", this.changeValue);
+            
+            select$.on("chosen:showing_dropdown", function() {vm.$emit('focus')});
+            
+            select$.on("chosen:hiding_dropdown", function() {vm.$emit('blur')});
+            
             if (this.options) {
                 this.updateOptions(this.options);
             }
-            
+            if (this.value) {
+                this.updateValue(this.value)
+                this.changeValue();
+            }
         },
         
         watch: {
-            // whenever question changes, this function will run
-            options: function (values) {
-                this.updateOptions(values);
+            options: function(newOptions) {
+                this.updateOptions(newOptions);
+            },
+            value: function(newValue) {
+                this.updateValue(newValue);
+            },
+            etat: function(value) {
+                if (value === 'clean') {
+                    this.etatDiv = '';
+                } else if (value === 'success') {
+                    this.etatDiv = hasSuccessClass;
+                } else if (value === 'error') {
+                    this.etatDiv = hasErrorClass;
+                }
             }
         },
         
         methods: {
-            updateOptions: function(values) {
+            updateOptions: function(options) {
+                this.optionsData = options
                 var select$ = $(this.$el).find("select");
+                var value = select$.val();
                 select$.empty();
-                select$.append($("<option/>", {value: ""}));
-                _.each(values, function(el, index) {
+                select$.append($("<option/>", {value: null}));
+                var reference = this.reference;
+                _.each(options, function(el) {
                     select$.append($("<option/>", {
-                        value: index+1,
-                        text: el
+                        value: (util.isObject(el))?el['id']:el,
+                        text: (util.isObject(el) && reference)?el[reference]:el
                     }));
                 });
                 select$.trigger("chosen:updated");
+                select$.val(value);
+                this.changeValue();
+            },
+            updateValue: function(value) {
+                var newValue = null;
+                if (util.isArray(value)) {
+                    newValue = _.map(value, function(el) {
+                        return (util.isObject(el))?el['id']:el
+                    });
+                } else if (value) {
+                    newValue = (util.isObject(value))?value['id']:value
+                }
+                $(this.$el).find("select").val(newValue);
+                $(this.$el).find("select").trigger("chosen:updated");
+            },
+            changeValue: function() {
+                var selections = $(this.$el).find("select").val();
+                var newSelections = _.filter(this.optionsData, function(value) {
+                    if (util.isArray(selections)) {
+                        var val = (util.isObject(value))?value['id']:value;
+                        return _.contains(selections, (util.isNotNullOrUndefined(val))?val.toString():val);
+                    } else {
+                        return (selections == ((util.isObject(value))?value['id']:value));
+                    } 
+                });
+                this.$emit('input', this.multiple?newSelections:newSelections[0]);
             }
         }
         
@@ -128,5 +186,4 @@
     
 </script>
 
-<!--<style src="../../node_modules/chosen-js/chosen.css"></style>-->
-<style src="./style-bootstraps.css"></style>
+<style src="./style.css"></style>

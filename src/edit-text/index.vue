@@ -1,8 +1,8 @@
 <template>
-    <div :class="[style.classDiv, etatDiv]" :id="id" v-show="show">
-        <label :class="style.classLabel" v-show="showLabel">{{labelData}}</label>
-        <div :class="style.classControl">
-            <input :class="style.classInput" :value="value" @input="$emit('input', $event.target.value)" :type="type" :placeholder="placeholder" @blur="blur" @focus="focus">
+    <div :class="[style.div, etatDiv]" :id="id" v-show="show">
+        <label :class="style.label" v-show="showLabel">{{labelData}}</label>
+        <div :class="style.control">
+            <input :class="style.input" :value="value" @input="$emit('input', $event.target.value)" :type="type" :placeholder="placeholder" @blur="blur" @focus="focus">
         </div>
     </div>
 </template>
@@ -34,10 +34,10 @@
                 type: Object,
                 default: function() {
                     return {
-                        classDiv: 'form-group row',
-                        classLabel: 'col-form-label',
-                        classControl: 'col-form-label',
-                        classInput: 'form-control' 
+                        div: 'form-group row',
+                        label: 'col-form-label',
+                        control: 'col-form-label',
+                        input: 'form-control' 
                     }
                 }
             },
@@ -115,6 +115,4 @@
     
 </script>
 
-<style scoped>
-
-</style>
+<style src="../../node_modules/bootstrap/dist/css/bootstrap.css"></style>

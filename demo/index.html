@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Demo components vuejs</title>
+        <!-- main.js -->
+        <script src="main.js"></script>
+        <!-- main.css -->
+        <link href="main.css" rel="stylesheet">
+    </head>
+    <body>
+        
+        <div id="app" class="container">
+        
+            <p>Nom: {{ nom }}</p>
+            
+            <edit-text id="nom" label="Nom" v-model="nom" style="{}"class-label="col-sm-4" class-control="col-sm-8" :etat="etatNom" required="true" @blur="validNom" @focus="etatNom='clean'"></edit-text>
+            
+            <p>Choix: {{ selected }}</p>
+            
+            <edit-select id="choix" label="Choix" class-label="col-sm-4" class-control="col-sm-8" placeholder="Fait ton choix..."
+                         :options="options" v-model="selected" :etat="etatChoix" required="true" @blur="validChoix" @focus="etatChoix='clean'"></edit-select>
+            
+            <modal id="myModal" :show="showModal" @close="showModal = false"></modal>
+            
+            <button class="btn btn-default" @click="showModal = true">Open Modal</button>
+        </div>
+        
+    </body>
+</html>
