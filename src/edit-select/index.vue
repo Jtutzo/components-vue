@@ -2,15 +2,20 @@
     <div :class="[style.classDiv, etatDiv]" :id="id" v-show="show">
         <label :class="style.classLabel" v-show="showLabel">{{labelData}}</label>
         <div :class="style.classControl">
-            <input :class="style.classInput" :value="value" @input="$emit('input', $event.target.value)" :type="type" :placeholder="placeholder" @blur="blur" @focus="focus">
+            <select :class="style.classSelect" :data-placeholder="placeholder" :multiple="multiple">
+                <slot></slot>
+            </select>
         </div>
     </div>
+    
 </template>
 
 <script>
-    
+    var $ = require('jquery');
     var _    = require('underscore');
     var util = require('common').util
+    
+    require('chosen-js');
     
     var defaultId = "edit-text";
     var countId   = 0;
@@ -37,7 +42,7 @@
                         classDiv: 'form-group row',
                         classLabel: 'col-form-label',
                         classControl: 'col-form-label',
-                        classInput: 'form-control' 
+                        classSelect: '' 
                     }
                 }
             },
@@ -46,22 +51,13 @@
                 default: false
             },
             maxLength: Number,
-            type: {
-                type: String,
-                default: "text",
-                validator: function(value) {
-                    return _.contains(["text", "number", "password", "tel", "email"], value);
-                }
-            },
-            min: Number,
-            max: Number,
             label: String,
             placeholder: String,
-            value: {
+            /**value: {
                 required: true
-            },
+            },*/
             show: {
-                Boolean,
+                type: Boolean,
                 default: true
             },
             enable: Boolean,
@@ -71,6 +67,14 @@
                 validator: function(value) {
                     return _.contains(["clean", "error", "success"], value);
                 }
+            },
+            multiple: {
+                type: Boolean,
+                default: false
+            },
+            options: {
+                type: Array,
+                default: null
             }
         },
         
@@ -85,36 +89,44 @@
             }
         },
         
-        /**
-        * Méthodes
-        */
-        methods: {
-            blur: function() {
-                this.$emit("blur");
-            },
-            focus: function() {
-                this.$emit("focus");
+        mounted: function() {
+            var vm = this;
+            $(this.$el).find("select").chosen({
+                inherit_select_classes: true,
+                width: '100%',
+                allow_single_deselect: true
+            });
+            if (this.options) {
+                this.updateOptions(this.options);
+            }
+            
+        },
+        
+        watch: {
+            // whenever question changes, this function will run
+            options: function (values) {
+                this.updateOptions(values);
             }
         },
         
-        /**
-        * Watch
-        */
-        watch: {
-            etat: function(value) {
-                if (value === 'clean') {
-                    this.etatDiv = '';
-                } else if (value === 'success') {
-                    this.etatDiv = hasSuccessClass;
-                } else if (value === 'error') {
-                    this.etatDiv = hasErrorClass;
-                }
+        methods: {
+            updateOptions: function(values) {
+                var select$ = $(this.$el).find("select");
+                select$.empty();
+                select$.append($("<option/>", {value: ""}));
+                _.each(values, function(el, index) {
+                    select$.append($("<option/>", {
+                        value: index+1,
+                        text: el
+                    }));
+                });
+                select$.trigger("chosen:updated");
             }
         }
+        
     }
     
 </script>
 
-<style scoped>
-
-</style>
+<!--<style src="../../node_modules/chosen-js/chosen.css"></style>-->
+<style src="./style-bootstraps.css"></style>

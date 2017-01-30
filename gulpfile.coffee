@@ -35,8 +35,8 @@ gulp.task 'webserver', () ->
         port:'3000',
         livereload: true,
         directoryListing: true,
-        open: true
+        #open: true
         directoryListing: 
             enable: true,
-            path: 'index.html'
+            #path: 'index.html'
 

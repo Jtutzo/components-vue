@@ -11,11 +11,16 @@
         
         <div id="app" class="container">
         
-            <edit-text id="nom" label="Nom" v-model="nom" class-label="col-sm-4" class-control="col-sm-8" :etat="etatNom" required="true"
-                   @blur="validNom" @focus="etatNom='clean'"></edit-text>
+            <edit-text id="nom" label="Nom" v-model="nom" class-label="col-sm-4" class-control="col-sm-8" :etat="etatNom" required="true" @blur="validNom" @focus="etatNom='clean'"></edit-text>
             
             <p>Selected: {{ selected }}</p>
-            <v-select :value.sync="selected" :options="options"></v-select>
+            <edit-select id="choix" label="choix" class-label="col-sm-4" class-control="col-sm-8" placeholder="Fait ton choix..."
+                         :options="options">
+                <option></option>
+                <option>KnockoutJs</option>
+	            <option>jQuery</option>
+	            <option>Vuejs</option>
+            </edit-select>
             
             <modal :show="showModal" @close="showModal = false"></modal>
             <modal-bootstrap id="myModal" :show="showModalBootstrap" @close="showModalBootstrap = false"></modal-bootstrap>
