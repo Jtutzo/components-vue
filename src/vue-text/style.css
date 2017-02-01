@@ -1,0 +1,40 @@
+:focus {outline:none}
+    
+div.vue-text.vue-text-main {
+    display: block;
+    margin: 10px;
+}
+    
+div.vue-text label.vue-text-label {
+    display: inline-block;
+    width: 15%;
+    vertical-align: middle;
+    font-weight: bold;
+}
+    
+div.vue-text div.vue-text-control {
+    display: inline-block;
+    width: 84%;
+    vertical-align: middle;
+}
+    
+div.vue-text div.vue-text-control input {
+    display: inline-block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+    
+div.vue-text div.vue-text-control input:focus {
+    border: 1px solid #4bd !important;
+}
+    
+div.vue-text div.vue-text-control input[readOnly] {
+    border-width: 0px !important;
+}

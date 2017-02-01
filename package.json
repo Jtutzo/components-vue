@@ -1,9 +1,10 @@
 {
   "name": "components-vue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "components for vuejs",
   "main": "index.coffee",
   "scripts": {
+    "clean": "coffee -c gulpfile.coffee && gulp clean",
     "start": "coffee -c gulpfile.coffee && gulp build && gulp demo",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,18 +23,17 @@
   },
   "homepage": "https://github.com/Jtutzo/components-vue#readme",
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "browserify-shim": "^3.8.12",
+    "jquery": "^3.1.1",
     "chosen-js": "^1.6.2",
     "common": "https://github.com/Jtutzo/common.git",
-    "transform-runtime": "0.0.0",
     "underscore": "^1.8.3",
-    "vue": "^2.1.10"
+    "vue": "^2.1.10",
+    "vuejs-datepicker": "^0.5.5"
   },
   "browser": {
     "vue": "vue/dist/vue.common",
-    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
-    "jQuery": "./node_modules/jquery/dist/jquery.min.js"
+    "jQuery": "./node_modules/jquery/dist/jquery.min.js",
+    "chosen-js": "./node_modules/chosen-js/chosen.jquery.js"
   },
   "browserify": {
     "transform": [
@@ -41,22 +41,24 @@
     ]
   },
   "browserify-shim": {
-    "bootstrap": {
-      "depends": [
-        "jquery:jQuery"
-      ]
+    "chosen-js": {
+        "depends": [
+            "jquery:jQuery"
+        ]
     }
   },
   "devDependencies": {
     "coffee": "^3.3.0",
     "coffeeify": "^2.1.0",
+    "transform-runtime": "0.0.0",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
+    "browserify-shim": "^3.8.12",
     "gulp-coffee": "^2.3.3",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.8",
     "gulp-webserver": "^0.9.1",
-    "jquery": "^3.1.1",
+    "gulp-clean": "^0.3.2",
     "vueify": "^9.4.0"
   }
 }

@@ -1,0 +1,6 @@
+<div class="vue-date vue-date-main" :class="[wrapperClass, etatDiv]" :id="id" v-show="show">
+    <label class="vue-date-label" :style="widthLabel" v-show="showLabel">{{labelData}}</label>
+    <div class="vue-date-control" :style="widthControl">
+        <datepicker :value="value" :monday-first="mondayFirst" :placeholder="placeholder" :language="lang" @selected="selected" @opened="focus"></datepicker>
+    </div>
+</div>

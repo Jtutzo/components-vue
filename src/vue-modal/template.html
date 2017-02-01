@@ -1,0 +1,14 @@
+<div :id="id" :class="wrapperClass" class="vue-modal" v-show="show">
+    <div class="vue-modal-content">
+        <span class="vue-modal-close" @click="close">&times;</span>
+        <div class="vue-modal-header">
+            <slot name="header"></slot>
+        </div>
+        <div class="vue-modal-body">
+            <slot name="body">Content...</slot>
+        </div>
+        <div class="vue-modal-footer">
+            <slot name="footer"></slot>
+        </div>
+    </div>
+</div>

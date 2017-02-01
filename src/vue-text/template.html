@@ -1,0 +1,6 @@
+<div class="vue-text vue-text-main" :class="[wrapperClass, etatDiv]" :id="id" v-show="show">
+    <label class="vue-text-label" :style="widthLabel" v-show="showLabel">{{labelData}}</label>
+    <div class="vue-text-control" :style="widthControl">
+        <input :value="value" @input="$emit('input', $event.target.value)" :type="type" :placeholder="placeholder" @blur="blur" @focus="focus">
+    </div>
+</div>

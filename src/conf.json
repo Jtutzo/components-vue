@@ -1,0 +1,37 @@
+{
+    id_vue_text: "id-vue-text",
+    id_vue_date: "id-vue-date",
+    id_vue_select: "id-vue-select",
+    id_vue_modal: "id-vue-modal",
+    width_label: "15%",
+    width_control: "84.6%",
+    etat: [
+        'clean',
+        'error',
+        'success'
+    ],
+    etat_class: {
+        'clean': '',
+        'error': 'vue-error',
+        'success': 'vue-success'
+    },
+    events: {
+        'input': 'input',
+        'blur': 'blur',
+        'focus': 'focus',
+        'close': 'close'
+    },
+    reference_vue_select: 'label',
+    chosen: {
+        inherit_select_classes: true,
+        width: '100%',
+        allow_single_deselect: true
+    },
+    type_vue_text: [
+        'text',
+        'number',
+        'password',
+        'tel',
+        'email'
+    ]
+}

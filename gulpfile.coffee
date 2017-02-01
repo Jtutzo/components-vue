@@ -5,9 +5,17 @@ gutil                = require 'gulp-util'
 rename               = require 'gulp-rename'
 browserify           = require 'gulp-browserify'
 vueify               = require 'vueify'
+clean                = require 'gulp-clean'
 
 ###
-* build scripts public
+* Clean
+###
+gulp.task 'clean', () -> 
+    gulp.src ['./**/*.js', '!./node_modules/**/*.js'], read: false
+    .pipe clean()
+
+###
+* build demo
 ###
 gulp.task 'build', () -> 
     gulp.src './demo/main.coffee', read: false
@@ -20,6 +28,9 @@ gulp.task 'build', () ->
     .on 'error', gutil.log
 
 
+###
+* start demo
+###
 gulp.task 'demo', () -> 
     gulp.src './demo'
     .pipe webserver

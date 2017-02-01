@@ -1,0 +1,8 @@
+<div class="vue-select vue-select-main" :class="[wrapperClass, etatDiv]" :id="id" v-show="show">
+    <label class="vue-select-label" :style="widthLabel" v-show="showLabel">{{labelData}}</label>
+    <div class="vue-select-control" :style="widthControl">
+        <select :data-placeholder="placeholder" :multiple="multiple">
+            <slot></slot>
+        </select>
+    </div>
+</div>
